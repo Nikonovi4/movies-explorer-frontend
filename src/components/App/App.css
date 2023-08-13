@@ -1,0 +1,62 @@
+.app {
+  background-color: #000;
+  min-height: 100vh;
+  position: relative;
+}
+
+.block {
+  width: 100%;
+  padding-left: 14px;
+  padding-right: 14px;
+  color: #fff;
+  box-sizing: border-box;
+  padding-top: 105px;
+  background-color: #202020;
+  min-width: 320px;
+}
+
+.subtitle {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.72px;
+}
+
+.text {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+@media screen and (min-width: 760px) {
+  .block {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 100px;
+  }
+
+  .subtitle {
+    font-size: 20px;
+    letter-spacing: -0.8px;
+  }
+
+  .text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (min-width: 1270px) {
+  .block {
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+}

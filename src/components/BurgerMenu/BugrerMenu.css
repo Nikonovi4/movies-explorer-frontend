@@ -1,0 +1,106 @@
+.burger__menu {
+  width: 1px;
+  height: 100vh;
+  background-color: #202020;
+  margin: 0;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 1s ease-out;
+  height: 0;
+  position: absolute;
+  z-index: 1;
+  right: 50vw;
+}
+
+.burger_opened {
+  width: 100%;
+  height: 100vh;
+  border-bottom: 0.5px solid rgba(84, 84, 84, 0.7);
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 1s ease-out;
+  right: 0;
+}
+
+.burger__content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 130px;
+  box-sizing: border-box;
+}
+
+.burger__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.burger__link {
+  text-decoration: none;
+  color: #ffff;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.burger__link_active {
+  border-bottom: 2px solid #ffff;
+}
+
+.burger__link:hover {
+  opacity: 0.7;
+  transition: 0.3s;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 46px;
+  gap: 7px;
+}
+
+.user__name {
+  color: #fff;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 12px;
+  margin: 0;
+}
+
+.burgerUser__avatar {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+@media screen and (min-width: 760px) {
+  .burger__menu {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    transform: none;
+    right: 10vw;
+  }
+
+  .burger_opened {
+    width: 570px;
+    opacity: 1;
+    transform: none;
+    right: 0;
+    height: 100vh;
+  }
+}

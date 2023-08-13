@@ -1,0 +1,33 @@
+@import url('./vendor/normalize.css');
+@import url('./vendor/fonts/fonts.css');
+
+@import url('./components/App/App.css');
+@import url('./components/Main/Main.css');
+
+@import url('./components/BlockHeader/BlockHeader.css');
+
+@import url('./components/Lending/Lending.css');
+@import url('./components/Promo/Promo.css');
+@import url('./components/Header/Header.css');
+@import url('./components/NaviBar/NaviBar.css');
+@import url('./components/AboutProject/AboutProject.css');
+@import url('./components/Techs/Techs.css');
+@import url('./components/Portfolio/Portfolio.css');
+@import url('./components/Footer/Footer.css');
+
+@import url('./components/Movies/Movies.css');
+@import url('./components/BurgerIqon/BurgerIqon.css');
+@import url('./components/BurgerMenu/BugrerMenu.css');
+@import url('./components/Searcher/Searcher.css');
+@import url('./components/Checkbox/Ceckbox.css');
+@import url('./components/MovieCard/MovieCard.css');
+@import url('./components/HeaderMenu/HeaderMenu.css');
+@import url('./components/SaveButton/SaveButton.css');
+@import url('./components/DeleteButton/DeleteButton.css');
+
+@import url('./components/Profile/Profile.css');
+
+@import url('./components/InitialScreen/InitialScreen.css');
+@import url('./components/inputs/inputs.css');
+
+@import url('./components/NotFound/NotFound.css');
