@@ -10,15 +10,19 @@ import LendingMenu from "../LendingMenu/LendingMenu";
 const Lending = () => {
   return (
     <>
-      <div className="lending__background">
+      <header className="lending__background">
         <Header children={<LendingMenu />} />
-      </div>
-      <Promo promoText="Учебный проект студента факультета Веб&#8209;разработки." />
-      <NaviBar />
-      <AboutProject />
-      <Techs />
-      <Portfolio />
-      <Footer />
+      </header>
+      <main>
+        <Promo promoText="Учебный проект студента факультета Веб&#8209;разработки." />
+        <NaviBar />
+        <AboutProject />
+        <Techs />
+        <Portfolio />
+      </main>
+      <footer>
+        <Footer />
+      </footer>
     </>
   );
 };

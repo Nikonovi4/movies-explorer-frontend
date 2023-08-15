@@ -1,6 +1,9 @@
 const BurgerIqon = ({ isOpenMenu, openBurgerMenu }) => {
   return (
-    <div className="burger__iqon" onClick={openBurgerMenu}>
+    <section
+      className={`iqon ${isOpenMenu ? "iqon_opened" : ""}`}
+      onClick={openBurgerMenu}
+    >
       <div
         className={`iqon__line ${
           isOpenMenu ? "line-first_clicked" : "line-first_unclicked"
@@ -16,7 +19,7 @@ const BurgerIqon = ({ isOpenMenu, openBurgerMenu }) => {
           isOpenMenu ? "line-third_clicked" : "line-third_unclicked"
         }`}
       ></div>
-    </div>
+    </section>
   );
 };
 

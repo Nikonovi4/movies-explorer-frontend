@@ -4,7 +4,6 @@ const DeleteButton = () => {
       aria-label="кнопка нравится."
       className="deleteButton"
       type="button"
-      //onClick={}
     />
   );
 };

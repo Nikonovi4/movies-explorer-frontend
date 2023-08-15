@@ -1,4 +1,4 @@
-.burger__menu {
+.burger {
   width: 1px;
   height: 100vh;
   background-color: #202020;
@@ -21,6 +21,7 @@
   transform: translateX(0);
   transition: all 1s ease-out;
   right: 0;
+  position: fixed;
 }
 
 .burger__content {
@@ -87,7 +88,7 @@
   border-radius: 50%;
 }
 
-@media screen and (min-width: 760px) {
+@media screen and (min-width: 530px) {
   .burger__menu {
     position: absolute;
     opacity: 0;
@@ -102,5 +103,6 @@
     transform: none;
     right: 0;
     height: 100vh;
+    position: fixed;
   }
 }

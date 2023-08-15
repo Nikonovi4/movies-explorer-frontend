@@ -9,7 +9,7 @@ const Registration = () => {
       footerText="Уже зарегистрированы?"
       link="/signin"
     >
-      <div className="inputs">
+      <form className="inputs">
         <label className="input__label">
           Имя
           <input
@@ -19,6 +19,7 @@ const Registration = () => {
             className="input input_name"
             minLength="4"
             maxLength="40"
+            placeholder="Ваше имя"
           />
         </label>
         <label className="input__label">
@@ -30,6 +31,7 @@ const Registration = () => {
             className="input input_email"
             minLength="4"
             maxLength="40"
+            placeholder="Ваш e-mail"
           />
         </label>
         <label className="input__label">
@@ -41,10 +43,11 @@ const Registration = () => {
             className="input input_password"
             minLength="6"
             maxLength="40"
+            placeholder="Ваш пароль"
           />
           <span className=""></span>
         </label>
-      </div>
+      </form>
     </InitialScreen>
   );
 };

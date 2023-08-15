@@ -1,13 +1,15 @@
+import { NavLink } from 'react-router-dom'
 import Logo from '../../images/logo.svg'
-import HeaderMenu from '../HeaderMenu/HeaderMenu'
+
 
 const Header = ({children}) => {
   return (
-    <div className = "header">
+    <header className = "header">
+      <NavLink to="/" className="header__link">
       <img alt='logo' src = {Logo} className ="header__logo" />
-      <HeaderMenu />
+      </NavLink>
       {children}
-    </div>
+    </header>
   )
 }
 

@@ -4,7 +4,7 @@ import BlockHeader from "../BlockHeader/BlockHeader";
 
 const Portfolio = () => {
   return (
-    <div className="portfolio block" id="portfolio">
+    <section className="portfolio block" id="portfolio">
       <BlockHeader blockName="Студент" />
       <div className="information">
         <img className="infomation__photo" alt="фото" src={Photo} />
@@ -34,26 +34,41 @@ const Portfolio = () => {
       <ul className="linkbar">
         <li className="linkbar__link">
           <p className="link__name">Статичный сайт</p>
-          <a href="/" className="link">
+          <a
+            href="https://nikonovi4.github.io/how-to-learn/"
+            className="link"
+            target="_blank"
+            rel="noreferrer"
+          >
             <img alt="стрелка" src={Arrow} className="link__iqon" />
           </a>
         </li>
         <hr className="linkbar__line"></hr>
         <li className="linkbar__link">
           <p className="link__name">Адаптивный сайт</p>
-          <a href="/movies" className="link">
+          <a
+            href="https://nikonovi4.github.io/russan_travel/"
+            className="link"
+            target="_blank"
+            rel="noreferrer"
+          >
             <img alt="стрелка" src={Arrow} className="link__iqon" />
           </a>
         </li>
         <hr className="linkbar__line"></hr>
         <li className="linkbar__link">
           <p className="link__name">Одностраничное приложение</p>
-          <a href="/" className="link">
+          <a
+            href="https://nikonovi4.github.io/react-mesto-auth/"
+            className="link"
+            target="_blank"
+            rel="noreferrer"
+          >
             <img alt="стрелка" src={Arrow} className="link__iqon" />
           </a>
         </li>
       </ul>
-    </div>
+    </section>
   );
 };
 

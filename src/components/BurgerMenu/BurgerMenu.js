@@ -4,7 +4,7 @@ import { NavLink, useLocation } from "react-router-dom";
 const BurgerMenu = ({ isOpenMenu, openBurgerMenu }) => {
   const location = useLocation();
   return (
-    <div className={`burger__menu ${isOpenMenu ? "burger_opened" : ""}`}>
+    <section className={`burger ${isOpenMenu ? "burger_opened" : ""}`}>
       <div className="burger__content">
         <ul className="burger__links">
           <li className="burger__point">
@@ -60,7 +60,7 @@ const BurgerMenu = ({ isOpenMenu, openBurgerMenu }) => {
           <img className="burgerUser__avatar" src={Avatar} alt="аватар" />
         </NavLink>
       </div>
-    </div>
+    </section>
   );
 };
 

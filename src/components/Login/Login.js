@@ -1,15 +1,15 @@
 import InitialScreen from "../InitialScreen/InitialScreen";
 
 const Login = () => {
-  return(
+  return (
     <InitialScreen
-    titleText="Рады видеть!"
-    naviText="Регистрация"
-    buttonText="Войти"
-    footerText="Ещё не зарегистрированы?"
-    link="/signup"
-  >
-     <div className="inputs">
+      titleText="Рады видеть!"
+      naviText="Регистрация"
+      buttonText="Войти"
+      footerText="Ещё не зарегистрированы?"
+      link="/signup"
+    >
+      <form className="inputs">
         <label className="input__label">
           E-mail
           <input
@@ -19,6 +19,7 @@ const Login = () => {
             className="input input_email"
             minLength="4"
             maxLength="40"
+            placeholder="Ваш e-mail"
           />
         </label>
         <label className="input__label">
@@ -30,13 +31,13 @@ const Login = () => {
             className="input input_password"
             minLength="6"
             maxLength="40"
+            placeholder="Введите пароль"
           />
           <span className=""></span>
         </label>
-      </div>
-
-  </InitialScreen>
-  )
+      </form>
+    </InitialScreen>
+  );
 };
 
 export default Login;

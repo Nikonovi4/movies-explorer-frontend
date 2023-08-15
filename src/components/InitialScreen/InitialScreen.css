@@ -34,13 +34,14 @@
 
 .initial__title {
   color: #ffff;
-  text-align: center;
   font-family: "Inter", Arial, Helvetica, sans-serif;
   font-size: 24px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
   margin-bottom: 80px;
+  display: flex;
+  justify-content: center;
 }
 
 .initial__button {
@@ -96,7 +97,7 @@
   width: 100%;
 }
 
-@media screen and (min-width: 760px) {
+@media screen and (min-width: 768px) {
   .initial {
     padding-left: 186px;
     padding-right: 186px;
@@ -110,10 +111,12 @@
 
   .initial__title {
     margin-bottom: 37px;
+    justify-content: flex-start;
   }
 
   .initial__fieldset {
-    height: calc(100vh - 481px);
+    height: calc(100vh - 527px);
+    min-height: 498px;
   }
 
   .initial__button {
@@ -133,7 +136,7 @@
   }
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1280px) {
   .initial {
     padding-left: 442px;
     padding-right: 442px;

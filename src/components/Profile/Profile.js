@@ -1,6 +1,7 @@
 import Header from "../Header/Header";
 import BurgerIqon from "../BurgerIqon/BurgerIqon";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
+import HeaderMenu from "../HeaderMenu/HeaderMenu";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -10,17 +11,13 @@ const Profile = ({ openBurgerMenu, isOpenMenu, userInfo }) => {
     isDisabled ? setDisabled(false) : setDisabled(true);
   };
   return (
-    <div className="profile">
+    <section className="profile">
       <BurgerMenu isOpenMenu={isOpenMenu} openBurgerMenu={openBurgerMenu} />
       <div className="profile__content">
-        <Header
-          children={
-            <BurgerIqon
-              openBurgerMenu={openBurgerMenu}
-              isOpenMenu={isOpenMenu}
-            />
-          }
-        />
+      <Header>
+          <HeaderMenu />
+          <BurgerIqon openBurgerMenu={openBurgerMenu} isOpenMenu={isOpenMenu} />
+        </Header>
         <form className="profile__form">
           <fieldset className="profile__fieldset" disabled={isDisabled}>
             <legend className="profile__title">Привет, {userInfo.name}!</legend>
@@ -83,7 +80,7 @@ const Profile = ({ openBurgerMenu, isOpenMenu, userInfo }) => {
           </li>
         </ul>
       </div>
-    </div>
+    </section>
   );
 };
 

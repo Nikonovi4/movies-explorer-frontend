@@ -4,7 +4,7 @@ import Avatar from "../../images/avatar.svg";
 const HeaderMenu = () => {
   const location = useLocation();
   return (
-    <div className="headerMenu">
+    <section className="headerMenu">
       <ul className="headerMenu__list">
         <li className="headerMenu__item">
           <NavLink
@@ -38,7 +38,7 @@ const HeaderMenu = () => {
           <img className="user__avatar" src={Avatar} alt="аватар" />
         </NavLink>
       </div>
-    </div>
+    </section>
   );
 };
 

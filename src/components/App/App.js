@@ -18,7 +18,7 @@ function App() {
   };
 
   return (
-    <div className="main">
+    <section className="main">
       <Routes>
         <Route path="/" element={<Lending />} />
         <Route
@@ -46,7 +46,7 @@ function App() {
         <Route path="/signin" element={<Login />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
-    </div>
+    </section>
   );
 }
 

@@ -11,8 +11,13 @@ const InitialScreen = ({
   link
 }) => {
   return (
-    <div className="initial">
+    <section className="initial">
+      <header>
+      <NavLink to="/">
       <img alt="logo" src={Logo} className="initial__logo" />
+      </NavLink>
+      </header>
+      <main>
       <form className="initial__form">
         <fieldset className="initial__fieldset">
           <div className="initial__inputBlock">
@@ -33,7 +38,8 @@ const InitialScreen = ({
           </div>
         </fieldset>
       </form>
-    </div>
+      </main>
+    </section>
   );
 };
 
