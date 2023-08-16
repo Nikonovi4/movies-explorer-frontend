@@ -33,37 +33,37 @@ const Portfolio = () => {
       <p className="portfolio__text">Портфолио</p>
       <ul className="linkbar">
         <li className="linkbar__link">
-          <p className="link__name">Статичный сайт</p>
           <a
             href="https://nikonovi4.github.io/how-to-learn/"
             className="link"
             target="_blank"
             rel="noreferrer"
           >
+            <p className="link__name">Статичный сайт</p>
             <img alt="стрелка" src={Arrow} className="link__iqon" />
           </a>
+       
         </li>
-        <hr className="linkbar__line"></hr>
         <li className="linkbar__link">
-          <p className="link__name">Адаптивный сайт</p>
           <a
             href="https://nikonovi4.github.io/russan_travel/"
             className="link"
             target="_blank"
             rel="noreferrer"
           >
+            <p className="link__name">Адаптивный сайт</p>
             <img alt="стрелка" src={Arrow} className="link__iqon" />
           </a>
+        
         </li>
-        <hr className="linkbar__line"></hr>
         <li className="linkbar__link">
-          <p className="link__name">Одностраничное приложение</p>
           <a
             href="https://nikonovi4.github.io/react-mesto-auth/"
             className="link"
             target="_blank"
             rel="noreferrer"
           >
+            <p className="link__name">Одностраничное приложение</p>
             <img alt="стрелка" src={Arrow} className="link__iqon" />
           </a>
         </li>

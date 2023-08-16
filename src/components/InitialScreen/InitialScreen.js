@@ -8,20 +8,19 @@ const InitialScreen = ({
   footerText,
   children,
   errorMessage,
-  link
+  link,
 }) => {
   return (
     <section className="initial">
-      <header>
-      <NavLink to="/">
-      <img alt="logo" src={Logo} className="initial__logo" />
-      </NavLink>
+      <header className="initial__header">
+        <NavLink to="/">
+          <img alt="logo" src={Logo} className="initial__logo" />
+        </NavLink>
+        <h2 className="initial__title">{titleText}</h2>
       </header>
-      <main>
       <form className="initial__form">
         <fieldset className="initial__fieldset">
           <div className="initial__inputBlock">
-            <legend className="initial__title">{titleText}</legend>
             {children}
             <p className="error">{errorMessage}</p>
           </div>
@@ -38,7 +37,6 @@ const InitialScreen = ({
           </div>
         </fieldset>
       </form>
-      </main>
     </section>
   );
 };

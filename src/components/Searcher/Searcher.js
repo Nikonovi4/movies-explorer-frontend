@@ -5,7 +5,7 @@ const Searcher = () => {
   return (
     <form className="searcher block">
       <label className="searcher__lable">
-        <input type="search" placeholder="Фильм" className="searcher__input" />
+        <input type="search" placeholder="Фильм" className="searcher__input" required />
         <button type="submit" className="searcher__button">
           <img src={Find} alt="кнопка поиска фильмов" />
         </button>
