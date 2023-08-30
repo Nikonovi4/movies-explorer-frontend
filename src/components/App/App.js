@@ -18,16 +18,25 @@ import {
   checkMovieName,
   checkUserMovies,
 } from "../../utils/finderFunction/finderFuncion";
+import {
+  LARGE_SCREEN_ADDENDUM,
+  MIDDLE_SCREEN_ADDENDUM,
+  SMALL_SCREEN_ADDENDUM,
+  LARGE_SCREEN_INITIAL_CARDS,
+  MIDDLE_SCREEN_INITIAL_CARDS,
+  SMALL_SCREEN_INITIAL_CARDS,
+} from "../../utils/config";
 import { useMediaQuery } from "@react-hook/media-query";
 import Preloader from "../Preloader/Preloader";
 
 function App() {
   const navigate = useNavigate();
   const historyResearch = JSON.parse(localStorage.getItem("savaedResearch"));
-  // const historySaving = JSON.parse(localStorage.getItem("savedList"));
- 
+  const isDesktop = useMediaQuery("(min-width: 1280px)");
+  const isTablet = useMediaQuery("(min-width: 768px)");
 
   //______________________Стейты________________________
+
   // Стейт хранения фильмов с сервервера Я
   const [cards, setCards] = useState(historyResearch?.moviesList || []);
   //Хранение отфильтрованных фильмов, которые отображаются на гл странице
@@ -37,10 +46,6 @@ function App() {
   //статус открытия бургер меню
   const [isOpenMenu, setOpenMenu] = useState(false);
 
-
-  const openBurgerMenu = () => {
-    isOpenMenu ? setOpenMenu(false) : setOpenMenu(true);
-  };
   //значения введеные в инпуты
   const [values, setValues] = useState({
     name: "",
@@ -48,36 +53,38 @@ function App() {
     password: "",
     searcher: "",
   });
-// ошибки валидации с инпутов
+  // ошибки валидации с инпутов
   const [errors, setErrors] = useState({});
-//статус валидации заначений инпутов
+  //статус валидации заначений инпутов
   const [isValid, setIsValid] = useState(false);
-//информация о пользователе
+  //информация о пользователе
   const [userInfo, setCurrentUser] = useState({});
-//статус аудентификации
+  //статус аудентификации
   const [isLogin, setLogin] = useState(false);
-//ошибки отправки инпутов
+  //ошибки отправки инпутов
   const [submitErrors, setSubmitErrors] = useState("");
 
   const location = useLocation();
-//состояние чекбокса
+  //состояние чекбокса
   const [checkedCheckbox, setCheckedCheckbox] = useState(
     historyResearch?.checkedCheckbox || false
   );
-//значение сабмита поиска
+  //значение сабмита поиска
   const [submitRequestValue, setSubmitRequestValue] = useState(
     historyResearch?.researchText || ""
   );
-// фильмы сохраненые пользователем()
+  // фильмы сохраненые пользователем()
   const [savingMovieList, setSavingMovieList] = useState([]);
-//сохраненные фильмы, прошедшие фильтрацию
+  //сохраненные фильмы, прошедшие фильтрацию
   const [renderSavedMovies, setRenderSavedMovies] = useState([]);
-//значкеие сабмита формы поиска схораненных фильмов
+  //значкеие сабмита формы поиска схораненных фильмов
   const [submitRequestValueOnSavingMovie, setSubmitRequestValueOnSavingMovie] =
     useState("");
-//статус прелоудера
+  //статус прелоудера
   const [isPreloaderVision, setPreloaderVision] = useState(false);
-//______________________юзЭффекты________________________
+
+  //______________________юзЭффекты________________________
+
   /// эффект для выгрузки фильмов с Я сервера
   useEffect(() => {
     if (isLogin && !!submitRequestValue) {
@@ -138,8 +145,6 @@ function App() {
     isLogin,
   ]);
 
-
-
   /// эффект для сброса ошибок на инпутах
   useEffect(() => {
     setErrors({});
@@ -150,15 +155,10 @@ function App() {
     checkToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-//______________________Функции________________________
 
-  // const isLiked = (data) => {
-  //   return historySaving.savedList.some(
-  //     (movie) => movie.nameRU === data.nameRU
-  //     );
-  //   };
+  //______________________Функции________________________
 
-//Регистрация
+  //Регистрация
   const handleRegister = () => {
     const { name, email, password } = values;
 
@@ -176,7 +176,7 @@ function App() {
       .finally(() => setPreloaderVision(false));
   };
 
-// Вход
+  // Вход
   const handleLogin = () => {
     const { email, password } = values;
 
@@ -229,6 +229,11 @@ function App() {
         setSubmitErrors(err);
       })
       .finally(() => setPreloaderVision(false));
+  };
+
+  //открытие бургер меню
+  const openBurgerMenu = () => {
+    isOpenMenu ? setOpenMenu(false) : setOpenMenu(true);
   };
 
   //валидация инпутов
@@ -288,10 +293,8 @@ function App() {
         nameRU,
         nameEN
       )
-      .then((film) => {
-        mainApi.getSavedMovies().then((sevedMovies) => {
-          setSavingMovieList(sevedMovies);
-        });
+      .then((movie) => {
+        setSavingMovieList([movie, ...savingMovieList]);
       })
       .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
   };
@@ -302,6 +305,20 @@ function App() {
 
     mainApi
       .deleteSaveedMovie(movieId)
+      .then(
+        setSavingMovieList((state) =>
+          state.filter((movie) => movie.movieId !== movieId)
+        )
+      )
+      .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
+  };
+
+  //удаление фильмов через главную страницу
+  const unLikeMovie = (data) => {
+    const movie = savingMovieList.find((movie) => movie.movieId === data.id);
+    const movieId = movie._id;
+    mainApi
+      .deleteSaveedMovie(movieId)
       .then(() => {
         mainApi
           .getSavedMovies()
@@ -310,27 +327,15 @@ function App() {
       .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
   };
 
-  //удаление фильмов через главную страницу
-  const unLikeMovie = (data) => {
-  const movie = savingMovieList.find((movie) => movie.movieId === data.id)
-  const movieId = movie._id
-    mainApi.deleteSaveedMovie(movieId)
-    .then(() =>{
-      mainApi.getSavedMovies()
-      .then((savedMovies) => setSavingMovieList(savedMovies));
-    })
-    .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
-  }
-  
   //определение есть ли фильм в сохраненных
   const isLiked = (data) => {
     return savingMovieList.some((movie) => movie.nameRU === data.nameRU);
   };
 
-//выход пользователя
+  //выход пользователя
   const handleLogout = () => {
     localStorage.removeItem("savaedResearch");
-    localStorage.removeItem('savedList');
+    localStorage.removeItem("savedList");
     mainApi
       .logout()
       .then(() => {
@@ -341,19 +346,6 @@ function App() {
         console.log(err);
       });
   };
-
-
-
-  const LARGE_SCREEN_ADDENDUM = 3;
-  const MIDDLE_SCREEN_ADDENDUM = 2;
-  const SMALL_SCREEN_ADDENDUM = 2;
-
-  const LARGE_SCREEN_INITIAL_CARDS = 12;
-  const MIDDLE_SCREEN_INITIAL_CARDS = 8;
-  const SMALL_SCREEN_INITIAL_CARDS = 5;
-
-  const isDesktop = useMediaQuery("(min-width: 1280px)");
-  const isTablet = useMediaQuery("(min-width: 768px)");
 
   const cardColumnCount = isDesktop
     ? LARGE_SCREEN_ADDENDUM
@@ -443,7 +435,7 @@ function App() {
                 handleSavedMovie={handleSavedMovie}
                 isLiked={isLiked}
                 unLikeMovie={unLikeMovie}
-                />
+              />
             }
           />
           <Route
