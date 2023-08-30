@@ -6,3 +6,7 @@ https://www.figma.com/file/0SofbKsKMdYCAgxpFS4Sg7/dark-3?type=design&node-id=410
 Ссылка на проект:
 
 https://nikonovi4.nomoredomainsicu.ru/saved-movies
+
+Ссылка на PR:
+
+https://github.com/Nikonovi4/movies-explorer-frontend/pull/2
