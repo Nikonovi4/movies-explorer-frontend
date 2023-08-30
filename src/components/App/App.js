@@ -293,8 +293,10 @@ function App() {
         nameRU,
         nameEN
       )
-      .then((movie) => {
-        setSavingMovieList([movie, ...savingMovieList]);
+      .then(() => {
+        mainApi
+          .getSavedMovies()
+          .then((savedMovies) => setSavingMovieList(savedMovies));
       })
       .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
   };
@@ -305,11 +307,11 @@ function App() {
 
     mainApi
       .deleteSaveedMovie(movieId)
-      .then(
-        setSavingMovieList((state) =>
-          state.filter((movie) => movie.movieId !== movieId)
-        )
-      )
+      .then(() => {
+        mainApi
+          .getSavedMovies()
+          .then((savedMovies) => setSavingMovieList(savedMovies));
+      })
       .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
   };
 

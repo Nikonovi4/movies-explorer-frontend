@@ -26,7 +26,7 @@ const Login = ({
       isValid={isValid}
       onSubmit={handleSubmitLogin}
     >
-      <form className="inputs">
+      <div className="inputs">
         <label className="input__label">
           E-mail
           <input
@@ -54,7 +54,7 @@ const Login = ({
           />
           <span className="errorSubmit">{submitErrors}</span>
         </label>
-      </form>
+      </div>
     </InitialScreen>
   );
 };

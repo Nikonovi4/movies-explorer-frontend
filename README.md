@@ -5,4 +5,4 @@ https://www.figma.com/file/0SofbKsKMdYCAgxpFS4Sg7/dark-3?type=design&node-id=410
 
 Ссылка на проект:
 
-nikonovi4.nomoredomainsicu.ru
+https://nikonovi4.nomoredomainsicu.ru/saved-movies

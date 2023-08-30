@@ -23,7 +23,7 @@ const Registration = ({
       isValid={isValid}
       onSubmit={handleSubmit}
     >
-      <form className="inputs">
+      <div className="inputs">
         <label className="input__label">
           Имя
           <input
@@ -64,7 +64,7 @@ const Registration = ({
           />
           <span className="errorSubmit">{submitErrors}</span>
         </label>
-      </form>
+      </div>
     </InitialScreen>
   );
 };
