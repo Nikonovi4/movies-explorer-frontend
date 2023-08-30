@@ -14,11 +14,23 @@
   gap: 16px;
   grid-template-columns: repeat(auto-fit, minmax(284px, 1fr));
   margin-top: 0;
+  max-width: 1135px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .buttonplace {
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.movie__hint{
+  font-family: Inter;
+  color: #fff;
+}
+
+.monie__hint_invisible {
+  display: none;
 }
 
 .movies__moreBtn {

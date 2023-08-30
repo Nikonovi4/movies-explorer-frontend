@@ -1,6 +1,20 @@
 import InitialScreen from "../InitialScreen/InitialScreen";
 
-const Login = () => {
+const Login = ({
+  handleChange,
+  errors,
+  handleLogin,
+  isValid,
+  submitErrors
+}) => {
+
+  const handleSubmitLogin = (e) => {
+    e.preventDefault();
+    handleLogin();
+  };
+
+
+
   return (
     <InitialScreen
       titleText="Рады видеть!"
@@ -8,6 +22,9 @@ const Login = () => {
       buttonText="Войти"
       footerText="Ещё не зарегистрированы?"
       link="/signup"
+      errors={errors}
+      isValid={isValid}
+      onSubmit={handleSubmitLogin}
     >
       <form className="inputs">
         <label className="input__label">
@@ -15,11 +32,12 @@ const Login = () => {
           <input
             type="email"
             required
-            name="input_email"
+            name="email"
             className="input input_email"
             minLength="4"
             maxLength="40"
             placeholder="Ваш e-mail"
+            onChange={handleChange}
           />
         </label>
         <label className="input__label">
@@ -27,13 +45,14 @@ const Login = () => {
           <input
             type="password"
             required
-            name="input_password"
+            name="password"
             className="input input_password"
             minLength="6"
             maxLength="40"
             placeholder="Введите пароль"
+            onChange={handleChange}
           />
-          <span className=""></span>
+          <span className="errorSubmit">{submitErrors}</span>
         </label>
       </form>
     </InitialScreen>

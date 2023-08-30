@@ -10,7 +10,8 @@
   height: 0;
   position: absolute;
   z-index: 1;
-  right: 50vw;
+  right: 12vw;
+  top: -100vh;
 }
 
 .burger_opened {
@@ -21,7 +22,9 @@
   transform: translateX(0);
   transition: all 1s ease-out;
   right: 0;
+  top: 0;
   position: fixed;
+
 }
 
 .burger__content {

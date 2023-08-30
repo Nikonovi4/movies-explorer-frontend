@@ -1,17 +1,22 @@
 import { useState } from "react";
 
-const SaveButton = () => {
-  const [isSavedMovie, setSavedMovie] = useState(false);
+const SaveButton = ({ data, handleSavedMovie, isLiked, unLikeMovie }) => {
+  const [savedButtonClick, setSavedButtonClick] = useState(isLiked(data));
+
   const savedMovie = () => {
-    isSavedMovie ? setSavedMovie(false) : setSavedMovie(true);
+    if (savedButtonClick) {
+      setSavedButtonClick(false);
+      unLikeMovie(data);
+    } else {
+      handleSavedMovie(data);
+      setSavedButtonClick(true);
+    }
   };
 
   return (
     <button
       aria-label="кнопка нравится."
-      className={`saveButton ${
-        isSavedMovie ? "saveButton_clicked" : ""
-      }`}
+      className={`saveButton ${savedButtonClick ? "saveButton_clicked" : ""}`}
       type="button"
       onClick={savedMovie}
     />

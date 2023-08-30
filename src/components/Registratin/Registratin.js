@@ -1,6 +1,17 @@
 import InitialScreen from "../InitialScreen/InitialScreen";
 
-const Registration = () => {
+const Registration = ({
+  handleChange,
+  errors,
+  isValid,
+  handleRegister,
+  submitErrors
+}) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleRegister();
+  };
+
   return (
     <InitialScreen
       titleText="Добро пожаловать!"
@@ -8,6 +19,9 @@ const Registration = () => {
       buttonText="Зарегистрироваться"
       footerText="Уже зарегистрированы?"
       link="/signin"
+      errors={errors}
+      isValid={isValid}
+      onSubmit={handleSubmit}
     >
       <form className="inputs">
         <label className="input__label">
@@ -15,11 +29,12 @@ const Registration = () => {
           <input
             type="text"
             required
-            name="input_name"
+            name="name"
             className="input input_name"
             minLength="4"
             maxLength="40"
             placeholder="Ваше имя"
+            onChange={handleChange}
           />
         </label>
         <label className="input__label">
@@ -27,11 +42,12 @@ const Registration = () => {
           <input
             type="email"
             required
-            name="input_email"
+            name="email"
             className="input input_email"
             minLength="4"
             maxLength="40"
             placeholder="Ваш e-mail"
+            onChange={handleChange}
           />
         </label>
         <label className="input__label">
@@ -39,13 +55,14 @@ const Registration = () => {
           <input
             type="password"
             required
-            name="input_password"
+            name="password"
             className="input input_password"
             minLength="6"
             maxLength="40"
             placeholder="Ваш пароль"
+            onChange={handleChange}
           />
-          <span className=""></span>
+          <span className="errorSubmit">{submitErrors}</span>
         </label>
       </form>
     </InitialScreen>

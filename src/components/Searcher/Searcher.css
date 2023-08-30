@@ -63,6 +63,11 @@
   margin-bottom: 50px;
 }
 
+.searcher__error{
+  display: block;
+  height: 20px;
+}
+
 .checkbox__text {
   margin: 0;
   font-family: "Inter", Arial, Helvetica, sans-serif;

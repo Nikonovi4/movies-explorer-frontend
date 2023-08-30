@@ -7,7 +7,7 @@ const NotFound = () => {
         <h2 className="notFound__code">404</h2>
         <p className="notFound__text">Страница не найдена</p>
       </div>
-      <NavLink to="/sign-up" className="initial__link">
+      <NavLink to="/movies" className="initial__link">
         Назад
       </NavLink>
     </main>

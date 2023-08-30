@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "../../index.css";
 import Lending from "../Lending/Lending";
 import Movies from "../Movies/Movies";
@@ -9,43 +9,477 @@ import Profile from "../Profile/Profile";
 import Registration from "../Registratin/Registratin";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
-import userInfo from "../../utils/userInfo";
+import moviesApi from "../../utils/MovieApi";
+import mainApi from "../../utils/MainApi";
+import { CurrentUserContext } from "../../context/CurrentUserContext";
+import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
+import {
+  checkShortMovie,
+  checkMovieName,
+  checkUserMovies,
+} from "../../utils/finderFunction/finderFuncion";
+import { useMediaQuery } from "@react-hook/media-query";
+import Preloader from "../Preloader/Preloader";
 
 function App() {
+  const navigate = useNavigate();
+  const historyResearch = JSON.parse(localStorage.getItem("savaedResearch"));
+  // const historySaving = JSON.parse(localStorage.getItem("savedList"));
+ 
+
+  //______________________Стейты________________________
+  // Стейт хранения фильмов с сервервера Я
+  const [cards, setCards] = useState(historyResearch?.moviesList || []);
+  //Хранение отфильтрованных фильмов, которые отображаются на гл странице
+  const [renderMovies, setRenderMovies] = useState(
+    historyResearch?.filteredMovies || []
+  );
+  //статус открытия бургер меню
   const [isOpenMenu, setOpenMenu] = useState(false);
+
+
   const openBurgerMenu = () => {
     isOpenMenu ? setOpenMenu(false) : setOpenMenu(true);
+  };
+  //значения введеные в инпуты
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    password: "",
+    searcher: "",
+  });
+// ошибки валидации с инпутов
+  const [errors, setErrors] = useState({});
+//статус валидации заначений инпутов
+  const [isValid, setIsValid] = useState(false);
+//информация о пользователе
+  const [userInfo, setCurrentUser] = useState({});
+//статус аудентификации
+  const [isLogin, setLogin] = useState(false);
+//ошибки отправки инпутов
+  const [submitErrors, setSubmitErrors] = useState("");
+
+  const location = useLocation();
+//состояние чекбокса
+  const [checkedCheckbox, setCheckedCheckbox] = useState(
+    historyResearch?.checkedCheckbox || false
+  );
+//значение сабмита поиска
+  const [submitRequestValue, setSubmitRequestValue] = useState(
+    historyResearch?.researchText || ""
+  );
+// фильмы сохраненые пользователем()
+  const [savingMovieList, setSavingMovieList] = useState([]);
+//сохраненные фильмы, прошедшие фильтрацию
+  const [renderSavedMovies, setRenderSavedMovies] = useState([]);
+//значкеие сабмита формы поиска схораненных фильмов
+  const [submitRequestValueOnSavingMovie, setSubmitRequestValueOnSavingMovie] =
+    useState("");
+//статус прелоудера
+  const [isPreloaderVision, setPreloaderVision] = useState(false);
+//______________________юзЭффекты________________________
+  /// эффект для выгрузки фильмов с Я сервера
+  useEffect(() => {
+    if (isLogin && !!submitRequestValue) {
+      moviesApi
+        .getAllCards()
+        .then((items) => {
+          setCards(items);
+          setPreloaderVision(true);
+        })
+        .catch((error) => console.log(`Произошла ${error}: ${error.message}`))
+        .finally(() => {
+          setPreloaderVision(false);
+        });
+    }
+  }, [isLogin, submitRequestValue]);
+
+  /// эффект для отрисовки главное страницы
+  useEffect(() => {
+    if (isLogin) {
+      const filterMovies = cards?.filter(
+        (movie) =>
+          checkShortMovie(movie) === checkedCheckbox &&
+          checkMovieName(movie, submitRequestValue)
+      );
+      setRenderMovies(filterMovies);
+      saveResearch(cards, submitRequestValue, filterMovies, checkedCheckbox);
+    }
+  }, [submitRequestValue, checkedCheckbox, cards, isLogin]);
+
+  ///эффект для выгрузки сохраненных фотографий
+  useEffect(() => {
+    mainApi
+      .getSavedMovies()
+      .then((movies) => {
+        setSavingMovieList(movies);
+      })
+      .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
+  }, []);
+
+  /// эффект для фильтрации сохраненных фильмов
+  useEffect(() => {
+    if (isLogin) {
+      const filterSavedMovie = savingMovieList.filter(
+        (movie) =>
+          checkShortMovie(movie) === checkedCheckbox &&
+          checkMovieName(movie, submitRequestValueOnSavingMovie) &&
+          checkUserMovies(movie, userInfo)
+      );
+
+      setRenderSavedMovies(filterSavedMovie);
+      // saveSevedMovies(savingMovieList);
+    }
+  }, [
+    checkedCheckbox,
+    savingMovieList,
+    submitRequestValueOnSavingMovie,
+    userInfo,
+    isLogin,
+  ]);
+
+
+
+  /// эффект для сброса ошибок на инпутах
+  useEffect(() => {
+    setErrors({});
+  }, [location]);
+
+  ///эффект для проверки токена
+  useEffect(() => {
+    checkToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+//______________________Функции________________________
+
+  // const isLiked = (data) => {
+  //   return historySaving.savedList.some(
+  //     (movie) => movie.nameRU === data.nameRU
+  //     );
+  //   };
+
+//Регистрация
+  const handleRegister = () => {
+    const { name, email, password } = values;
+
+    mainApi
+      .rerister(name, email, password)
+      .then(() => {
+        handleLogin(email, password);
+        setPreloaderVision(true);
+        setErrors({});
+        setSubmitErrors();
+      })
+      .catch((err) => {
+        setSubmitErrors(err);
+      })
+      .finally(() => setPreloaderVision(false));
+  };
+
+// Вход
+  const handleLogin = () => {
+    const { email, password } = values;
+
+    mainApi
+      .login(email, password)
+      .then((data) => {
+        setPreloaderVision(true);
+        setCurrentUser(data.user);
+        setLogin(true);
+        setErrors({});
+        setSubmitErrors();
+      })
+      .then(() => navigate("/movies"))
+      .catch((err) => {
+        setSubmitErrors(`Произошла ${err}: ${err.message}`);
+      })
+      .finally(() => setPreloaderVision(false));
+  };
+
+  //Проверка токена
+  const checkToken = () => {
+    mainApi
+      .getInfo()
+      .then((data) => {
+        if (data) {
+          setLogin(true);
+          navigate(location.pathname, { replace: true });
+          setCurrentUser(data);
+        } else {
+          setLogin(false);
+        }
+      })
+      .catch((err) => {
+        setLogin(false);
+        console.log(`Произошла ${err}: ${err.message}`);
+      });
+  };
+
+  //изменение данных пользователя
+  const handleEditUserInfo = () => {
+    const { name, email } = values;
+
+    mainApi
+      .editProfile(name, email)
+      .then((data) => {
+        setCurrentUser(data);
+        setPreloaderVision(true);
+      })
+      .catch((err) => {
+        setSubmitErrors(err);
+      })
+      .finally(() => setPreloaderVision(false));
+  };
+
+  //валидация инпутов
+  const handleChange = (e) => {
+    const target = e.target;
+    const name = target.name;
+    const value = target.value;
+    setValues({ ...values, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
+    setIsValid(target.closest("form").checkValidity());
+  };
+
+  //сохранение параметров поиска
+  const saveResearch = (
+    moviesList,
+    researchText,
+    filteredMovies,
+    checkedCheckbox
+  ) => {
+    localStorage.setItem(
+      "savaedResearch",
+      JSON.stringify({
+        moviesList,
+        researchText,
+        filteredMovies,
+        checkedCheckbox,
+      })
+    );
+  };
+
+  //сохранение фильма
+  const handleSavedMovie = (movie) => {
+    const {
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailerLink,
+      id,
+      nameRU,
+      nameEN,
+    } = movie;
+
+    mainApi
+      .saveMovie(
+        country,
+        director,
+        duration,
+        year,
+        description,
+        `https://api.nomoreparties.co${image.url}`,
+        trailerLink,
+        `https://api.nomoreparties.co${image.formats.thumbnail.url}`,
+        id,
+        nameRU,
+        nameEN
+      )
+      .then((film) => {
+        mainApi.getSavedMovies().then((sevedMovies) => {
+          setSavingMovieList(sevedMovies);
+        });
+      })
+      .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
+  };
+
+  //удаление фильма
+  const handleDeleteMovie = (movie) => {
+    const movieId = movie._id;
+
+    mainApi
+      .deleteSaveedMovie(movieId)
+      .then(() => {
+        mainApi
+          .getSavedMovies()
+          .then((savedMovies) => setSavingMovieList(savedMovies));
+      })
+      .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
+  };
+
+  //удаление фильмов через главную страницу
+  const unLikeMovie = (data) => {
+  const movie = savingMovieList.find((movie) => movie.movieId === data.id)
+  const movieId = movie._id
+    mainApi.deleteSaveedMovie(movieId)
+    .then(() =>{
+      mainApi.getSavedMovies()
+      .then((savedMovies) => setSavingMovieList(savedMovies));
+    })
+    .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
+  }
+  
+  //определение есть ли фильм в сохраненных
+  const isLiked = (data) => {
+    return savingMovieList.some((movie) => movie.nameRU === data.nameRU);
+  };
+
+//выход пользователя
+  const handleLogout = () => {
+    localStorage.removeItem("savaedResearch");
+    localStorage.removeItem('savedList');
+    mainApi
+      .logout()
+      .then(() => {
+        navigate("/");
+        setLogin(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+
+
+  const LARGE_SCREEN_ADDENDUM = 3;
+  const MIDDLE_SCREEN_ADDENDUM = 2;
+  const SMALL_SCREEN_ADDENDUM = 2;
+
+  const LARGE_SCREEN_INITIAL_CARDS = 12;
+  const MIDDLE_SCREEN_INITIAL_CARDS = 8;
+  const SMALL_SCREEN_INITIAL_CARDS = 5;
+
+  const isDesktop = useMediaQuery("(min-width: 1280px)");
+  const isTablet = useMediaQuery("(min-width: 768px)");
+
+  const cardColumnCount = isDesktop
+    ? LARGE_SCREEN_ADDENDUM
+    : isTablet
+    ? MIDDLE_SCREEN_ADDENDUM
+    : SMALL_SCREEN_ADDENDUM;
+
+  const initialCardCount = isDesktop
+    ? LARGE_SCREEN_INITIAL_CARDS
+    : isTablet
+    ? MIDDLE_SCREEN_INITIAL_CARDS
+    : SMALL_SCREEN_INITIAL_CARDS;
+
+  const [visibleCardCount, setVisibleCardCount] = useState(initialCardCount);
+  const roundedVisibleCardCount =
+    Math.floor(visibleCardCount / cardColumnCount) * cardColumnCount;
+
+  const calculateCardCount = () => {
+    if (isDesktop) {
+      return setVisibleCardCount(visibleCardCount + LARGE_SCREEN_ADDENDUM);
+    }
+
+    if (isTablet) {
+      return setVisibleCardCount(visibleCardCount + MIDDLE_SCREEN_ADDENDUM);
+    }
+
+    setVisibleCardCount(visibleCardCount + SMALL_SCREEN_ADDENDUM);
   };
 
   return (
     <section className="main">
-      <Routes>
-        <Route path="/" element={<Lending />} />
-        <Route
-          path="/movies"
-          element={
-            <Movies openBurgerMenu={openBurgerMenu} isOpenMenu={isOpenMenu} />
-          }
-        />
-        <Route
-          path="/saved-movies"
-          element={
-            <SavedMovie
-              openBurgerMenu={openBurgerMenu}
-              isOpenMenu={isOpenMenu}
-            />
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <Profile openBurgerMenu={openBurgerMenu} isOpenMenu={isOpenMenu} userInfo = {userInfo} />
-          }
-        />
-        <Route path="/signup" element={<Registration />} />
-        <Route path="/signin" element={<Login />} />
-        <Route path="/*" element={<NotFound />} />
-      </Routes>
+      <Preloader isPreloaderVision={isPreloaderVision} />
+      <CurrentUserContext.Provider value={userInfo}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Lending
+                isLogin={isLogin}
+                openBurgerMenu={openBurgerMenu}
+                isOpenMenu={isOpenMenu}
+              />
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <Registration
+                handleChange={handleChange}
+                errors={errors}
+                isValid={isValid}
+                handleRegister={handleRegister}
+                submitErrors={submitErrors}
+              />
+            }
+          />
+          <Route
+            path="/signin"
+            element={
+              <Login
+                handleChange={handleChange}
+                errors={errors}
+                handleLogin={handleLogin}
+                isValid={isValid}
+                submitErrors={[submitErrors]}
+              />
+            }
+          />
+          <Route path="/*" element={<NotFound />} />
+          <Route
+            path="/movies"
+            element={
+              <ProtectedRoute
+                isLogin={isLogin}
+                element={Movies}
+                openBurgerMenu={openBurgerMenu}
+                isOpenMenu={isOpenMenu}
+                handleChange={handleChange}
+                renderMovies={renderMovies}
+                setCheckedCheckbox={setCheckedCheckbox}
+                checkedCheckbox={checkedCheckbox}
+                onSearchMovie={setSubmitRequestValue}
+                submitRequestValue={submitRequestValue}
+                values={values}
+                calculateCardCount={calculateCardCount}
+                roundedVisibleCardCount={roundedVisibleCardCount}
+                handleSavedMovie={handleSavedMovie}
+                isLiked={isLiked}
+                unLikeMovie={unLikeMovie}
+                />
+            }
+          />
+          <Route
+            path="/saved-movies"
+            element={
+              <ProtectedRoute
+                isLogin={isLogin}
+                element={SavedMovie}
+                openBurgerMenu={openBurgerMenu}
+                isOpenMenu={isOpenMenu}
+                handleChange={handleChange}
+                setCheckedCheckbox={setCheckedCheckbox}
+                onSearchMovie={setSubmitRequestValueOnSavingMovie}
+                renderSavedMovies={renderSavedMovies}
+                handleDeleteMovie={handleDeleteMovie}
+              />
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute
+                isLogin={isLogin}
+                element={Profile}
+                openBurgerMenu={openBurgerMenu}
+                isOpenMenu={isOpenMenu}
+                userInfo={userInfo}
+                handleChange={handleChange}
+                isValid={isValid}
+                handleEditUserInfo={handleEditUserInfo}
+                handleLogout={handleLogout}
+              />
+            }
+          />
+        </Routes>
+      </CurrentUserContext.Provider>
     </section>
   );
 }

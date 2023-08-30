@@ -32,6 +32,25 @@
   line-height: 16px;
 }
 
+.error {
+  color: #EE3465;
+  font-family: Inter;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.errorSubmit {
+  color: #EE3465;
+  font-family: Inter;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 10px;
+}
+
 @media screen and (min-width: 760px) {
   .block {
     padding-left: 50px;
@@ -48,6 +67,7 @@
     font-size: 12px;
     line-height: 18px;
   }
+
 }
 
 @media screen and (min-width: 1270px) {
