@@ -19,11 +19,12 @@ const Movies = ({
   handleSavedMovie,
   isLiked,
   unLikeMovie,
+  isDesable,
 }) => {
   const handleClick = () => {
     calculateCardCount();
   };
-
+console.log(isDesable)
   return (
     <section className="movies">
       <header className="movie__background">
@@ -45,9 +46,18 @@ const Movies = ({
         >
           Нужно ввести ключевое слово
         </span>
+        <span
+          className={
+            !!submitRequestValue && !renderMovies.length
+              ? "movie__hint"
+              : "monie__hint_invisible"
+          }
+        >
+          Ничего не найдено
+        </span>
         <ul className="movies__cards">
-          {renderMovies?.slice(0, roundedVisibleCardCount).map((movie, i) => (
-            <MovieCard data={movie} key={i}>
+          {renderMovies?.slice(0, roundedVisibleCardCount).map((movie, movieId) => (
+            <MovieCard data={movie} key={movieId}>
               <SaveButton
                 data={movie}
                 handleSavedMovie={handleSavedMovie}
@@ -58,7 +68,14 @@ const Movies = ({
           ))}
         </ul>
         <section className="buttonplace">
-          <button className="movies__moreBtn" onClick={handleClick}>
+          <button
+            className={
+              (roundedVisibleCardCount === renderMovies.length)
+                ? "movies__moreBtn_invisible"
+                : "movies__moreBtn"
+            }
+            onClick={handleClick}
+          >
             Ещё
           </button>
         </section>

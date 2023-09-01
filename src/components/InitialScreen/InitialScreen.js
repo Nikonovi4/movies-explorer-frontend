@@ -10,7 +10,8 @@ const InitialScreen = ({
   link,
   errors,
   isValid,
-  onSubmit
+  onSubmit,
+  isDesable
 }) => {
  
 

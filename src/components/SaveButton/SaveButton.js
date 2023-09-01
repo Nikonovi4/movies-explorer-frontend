@@ -1,7 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+
 
 const SaveButton = ({ data, handleSavedMovie, isLiked, unLikeMovie }) => {
   const [savedButtonClick, setSavedButtonClick] = useState(isLiked(data));
+
+  useEffect(() => {
+    setSavedButtonClick(isLiked(data))
+  }, [isLiked, data])
 
   const savedMovie = () => {
     if (savedButtonClick) {

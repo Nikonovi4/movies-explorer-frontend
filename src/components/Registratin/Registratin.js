@@ -5,7 +5,8 @@ const Registration = ({
   errors,
   isValid,
   handleRegister,
-  submitErrors
+  submitErrors,
+  isDesable
 }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,6 +23,7 @@ const Registration = ({
       errors={errors}
       isValid={isValid}
       onSubmit={handleSubmit}
+      isDesable={isDesable}
     >
       <div className="inputs">
         <label className="input__label">
@@ -48,6 +50,7 @@ const Registration = ({
             maxLength="40"
             placeholder="Ваш e-mail"
             onChange={handleChange}
+            pattern="/^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i"
           />
         </label>
         <label className="input__label">

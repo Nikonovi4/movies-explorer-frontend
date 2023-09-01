@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import "../../index.css";
 import Lending from "../Lending/Lending";
 import Movies from "../Movies/Movies";
@@ -25,6 +31,8 @@ import {
   LARGE_SCREEN_INITIAL_CARDS,
   MIDDLE_SCREEN_INITIAL_CARDS,
   SMALL_SCREEN_INITIAL_CARDS,
+  isDesktopSize,
+  isTabletSize,
 } from "../../utils/config";
 import { useMediaQuery } from "@react-hook/media-query";
 import Preloader from "../Preloader/Preloader";
@@ -32,8 +40,9 @@ import Preloader from "../Preloader/Preloader";
 function App() {
   const navigate = useNavigate();
   const historyResearch = JSON.parse(localStorage.getItem("savaedResearch"));
-  const isDesktop = useMediaQuery("(min-width: 1280px)");
-  const isTablet = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery(isDesktopSize);
+  const isTablet = useMediaQuery(isTabletSize);
+  const location = useLocation();
 
   //______________________Стейты________________________
 
@@ -63,12 +72,13 @@ function App() {
   const [isLogin, setLogin] = useState(false);
   //ошибки отправки инпутов
   const [submitErrors, setSubmitErrors] = useState("");
-
-  const location = useLocation();
   //состояние чекбокса
   const [checkedCheckbox, setCheckedCheckbox] = useState(
     historyResearch?.checkedCheckbox || false
   );
+  //состояние чекбокса в сохраненых фильмах
+  const [checkedCheckboxSavedMovie, setCheckedCheckboxSavedMovie] =
+    useState(false);
   //значение сабмита поиска
   const [submitRequestValue, setSubmitRequestValue] = useState(
     historyResearch?.researchText || ""
@@ -82,17 +92,20 @@ function App() {
     useState("");
   //статус прелоудера
   const [isPreloaderVision, setPreloaderVision] = useState(false);
+  //отборажение подсказки
+  const [isVisibleMessage, setVisibleMessage] = useState("error_invisible");
+
 
   //______________________юзЭффекты________________________
 
   /// эффект для выгрузки фильмов с Я сервера
   useEffect(() => {
     if (isLogin && !!submitRequestValue) {
+      setPreloaderVision(true);
       moviesApi
         .getAllCards()
         .then((items) => {
           setCards(items);
-          setPreloaderVision(true);
         })
         .catch((error) => console.log(`Произошла ${error}: ${error.message}`))
         .finally(() => {
@@ -106,6 +119,7 @@ function App() {
     if (isLogin) {
       const filterMovies = cards?.filter(
         (movie) =>
+          !!submitRequestValue &&
           checkShortMovie(movie) === checkedCheckbox &&
           checkMovieName(movie, submitRequestValue)
       );
@@ -129,16 +143,15 @@ function App() {
     if (isLogin) {
       const filterSavedMovie = savingMovieList.filter(
         (movie) =>
-          checkShortMovie(movie) === checkedCheckbox &&
+          checkShortMovie(movie) === checkedCheckboxSavedMovie &&
           checkMovieName(movie, submitRequestValueOnSavingMovie) &&
           checkUserMovies(movie, userInfo)
       );
 
       setRenderSavedMovies(filterSavedMovie);
-      // saveSevedMovies(savingMovieList);
     }
   }, [
-    checkedCheckbox,
+    checkedCheckboxSavedMovie,
     savingMovieList,
     submitRequestValueOnSavingMovie,
     userInfo,
@@ -148,6 +161,8 @@ function App() {
   /// эффект для сброса ошибок на инпутах
   useEffect(() => {
     setErrors({});
+    setVisibleMessage("error_invisible");
+    setSubmitErrors("");
   }, [location]);
 
   ///эффект для проверки токена
@@ -161,7 +176,6 @@ function App() {
   //Регистрация
   const handleRegister = () => {
     const { name, email, password } = values;
-
     mainApi
       .rerister(name, email, password)
       .then(() => {
@@ -169,11 +183,14 @@ function App() {
         setPreloaderVision(true);
         setErrors({});
         setSubmitErrors();
+        setIsValid(false);
       })
       .catch((err) => {
         setSubmitErrors(err);
       })
-      .finally(() => setPreloaderVision(false));
+      .finally(() => {
+        setPreloaderVision(false);
+      });
   };
 
   // Вход
@@ -189,7 +206,10 @@ function App() {
         setErrors({});
         setSubmitErrors();
       })
-      .then(() => navigate("/movies"))
+      .then(() => {
+        navigate("/movies");
+        setIsValid(false);
+      })
       .catch((err) => {
         setSubmitErrors(`Произошла ${err}: ${err.message}`);
       })
@@ -218,9 +238,8 @@ function App() {
   //изменение данных пользователя
   const handleEditUserInfo = () => {
     const { name, email } = values;
-
     mainApi
-      .editProfile(name, email)
+      .editProfile(name || userInfo.name, email || userInfo.email)
       .then((data) => {
         setCurrentUser(data);
         setPreloaderVision(true);
@@ -228,7 +247,9 @@ function App() {
       .catch((err) => {
         setSubmitErrors(err);
       })
-      .finally(() => setPreloaderVision(false));
+      .finally(() => {
+        setPreloaderVision(false);
+      });
   };
 
   //открытие бургер меню
@@ -293,10 +314,9 @@ function App() {
         nameRU,
         nameEN
       )
-      .then(() => {
-        mainApi
-          .getSavedMovies()
-          .then((savedMovies) => setSavingMovieList(savedMovies));
+      .then(({ movie }) => {
+        setSavingMovieList([movie, ...savingMovieList]);
+        console.log(savingMovieList);
       })
       .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
   };
@@ -307,11 +327,9 @@ function App() {
 
     mainApi
       .deleteSaveedMovie(movieId)
-      .then(() => {
-        mainApi
-          .getSavedMovies()
-          .then((savedMovies) => setSavingMovieList(savedMovies));
-      })
+      .then(
+        setSavingMovieList((state) => state.filter((c) => c._id !== movie._id))
+      )
       .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
   };
 
@@ -321,11 +339,9 @@ function App() {
     const movieId = movie._id;
     mainApi
       .deleteSaveedMovie(movieId)
-      .then(() => {
-        mainApi
-          .getSavedMovies()
-          .then((savedMovies) => setSavingMovieList(savedMovies));
-      })
+      .then(
+        setSavingMovieList((state) => state.filter((c) => c._id !== movie._id))
+      )
       .catch((error) => console.log(`Произошла ${error}: ${error.message}`));
   };
 
@@ -337,7 +353,6 @@ function App() {
   //выход пользователя
   const handleLogout = () => {
     localStorage.removeItem("savaedResearch");
-    localStorage.removeItem("savedList");
     mainApi
       .logout()
       .then(() => {
@@ -349,12 +364,6 @@ function App() {
       });
   };
 
-  const cardColumnCount = isDesktop
-    ? LARGE_SCREEN_ADDENDUM
-    : isTablet
-    ? MIDDLE_SCREEN_ADDENDUM
-    : SMALL_SCREEN_ADDENDUM;
-
   const initialCardCount = isDesktop
     ? LARGE_SCREEN_INITIAL_CARDS
     : isTablet
@@ -362,8 +371,7 @@ function App() {
     : SMALL_SCREEN_INITIAL_CARDS;
 
   const [visibleCardCount, setVisibleCardCount] = useState(initialCardCount);
-  const roundedVisibleCardCount =
-    Math.floor(visibleCardCount / cardColumnCount) * cardColumnCount;
+  const roundedVisibleCardCount = visibleCardCount;
 
   const calculateCardCount = () => {
     if (isDesktop) {
@@ -395,25 +403,32 @@ function App() {
           <Route
             path="/signup"
             element={
-              <Registration
-                handleChange={handleChange}
-                errors={errors}
-                isValid={isValid}
-                handleRegister={handleRegister}
-                submitErrors={submitErrors}
-              />
+              !isLogin ? (
+                <Registration
+                  handleChange={handleChange}
+                  errors={errors}
+                  isValid={isValid}
+                  handleRegister={handleRegister}
+                  submitErrors={submitErrors}
+                />
+              ) : (
+                <Navigate to="/" />
+              )
             }
           />
           <Route
             path="/signin"
-            element={
-              <Login
+            element={ !isLogin ?
+              (<Login
                 handleChange={handleChange}
                 errors={errors}
                 handleLogin={handleLogin}
                 isValid={isValid}
                 submitErrors={[submitErrors]}
               />
+              ) : (
+                <Navigate to='/' />
+              )
             }
           />
           <Route path="/*" element={<NotFound />} />
@@ -437,6 +452,7 @@ function App() {
                 handleSavedMovie={handleSavedMovie}
                 isLiked={isLiked}
                 unLikeMovie={unLikeMovie}
+                errors={errors}
               />
             }
           />
@@ -449,7 +465,8 @@ function App() {
                 openBurgerMenu={openBurgerMenu}
                 isOpenMenu={isOpenMenu}
                 handleChange={handleChange}
-                setCheckedCheckbox={setCheckedCheckbox}
+                checkedCheckboxSavedMovie={checkedCheckboxSavedMovie}
+                setCheckedCheckboxSavedMovie={setCheckedCheckboxSavedMovie}
                 onSearchMovie={setSubmitRequestValueOnSavingMovie}
                 renderSavedMovies={renderSavedMovies}
                 handleDeleteMovie={handleDeleteMovie}
@@ -469,6 +486,9 @@ function App() {
                 isValid={isValid}
                 handleEditUserInfo={handleEditUserInfo}
                 handleLogout={handleLogout}
+                values={values}
+                isVisibleMessage={isVisibleMessage}
+                setVisibleMessage={setVisibleMessage}
               />
             }
           />

@@ -14,6 +14,7 @@ const Searcher = ({
     onSearchMovie(e.target.elements["searcher"].value);
   };
 
+ 
   return (
     <form className="searcher block" onSubmit={handleSearchMovie}>
       <label className="searcher__lable">
@@ -24,7 +25,6 @@ const Searcher = ({
           name="searcher"
           onChange={handleChange}
           defaultValue={submitRequestValue}
-          required
         />
         <button type="submit" className="searcher__button">
           <img src={Find} alt="кнопка поиска фильмов" />
@@ -37,7 +37,7 @@ const Searcher = ({
         />
         <p className="checkbox__text">Короткометражки</p>
       </div>
-      {/* <p className="searcher__error error">{!values.searcher? "Нужно ввести ключевое слово" : ""}</p> */}
+      
       <hr className="searcher__line" />
     </form>
   );

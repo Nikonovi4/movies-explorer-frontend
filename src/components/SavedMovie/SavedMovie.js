@@ -9,8 +9,8 @@ const SavedMovie = ({
   openBurgerMenu,
   isOpenMenu,
   handleChange,
-  setCheckedCheckbox,
-  checkedCheckbox,
+  setCheckedCheckboxSavedMovie,
+  checkedCheckboxSavedMovie,
   onSearchMovie,
   values,
   renderSavedMovies,
@@ -25,15 +25,15 @@ const SavedMovie = ({
       <main className="movie__background">
         <Searcher
           handleChange={handleChange}
-          setCheckedCheckbox={setCheckedCheckbox}
-          checkedCheckbox={checkedCheckbox}
+          setCheckedCheckbox={setCheckedCheckboxSavedMovie}
+          checkedCheckbox={checkedCheckboxSavedMovie}
           onSearchMovie={onSearchMovie}
           values={values}
         />
         <section>
           <ul className="movies__cards">
             {renderSavedMovies?.map((movie, i) => (
-              <MovieCard data={movie} key={i}>
+              <MovieCard data={movie} key={movie.movieId}>
                 <DeleteButton
                   data={movie}
                   handleDeleteMovie={handleDeleteMovie}

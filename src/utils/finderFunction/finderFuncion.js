@@ -1,5 +1,7 @@
+import { maxDurationShortCut } from "../config";
+
 export const checkShortMovie = (movie) => {
-  return movie.duration < 40;
+  return movie.duration < maxDurationShortCut;
 };
 
 export const checkMovieName = (movie, request) => {

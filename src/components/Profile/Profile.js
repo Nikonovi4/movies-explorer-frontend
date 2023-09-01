@@ -11,26 +11,37 @@ const Profile = ({
   isValid,
   handleEditUserInfo,
   handleLogout,
+  values,
+  isVisibleMessage, 
+  setVisibleMessage,
 }) => {
   const [isEditing, setEditing] = useState(false);
   const editingForm = () => {
     isEditing ? setEditing(false) : setEditing(true);
   };
 
+
+
   const handleSubmitUserInfo = (e) => {
     e.preventDefault();
     handleEditUserInfo();
+    setVisibleMessage("error")
   };
 
   const submitButtonClass = () => {
     if (!isEditing) {
       return "submitButton submitButton_invisible";
-    } else if (isValid) {
+    } else if (isDesableButton()) {
       return "submitButton";
     } else {
       return "submitButton submitButton_disable";
     }
   };
+
+
+const isDesableButton = () => {
+ return (isValid && (values.name !== userInfo.name) && (values.email !== userInfo.email))
+}
 
   return (
     <section className="profile">
@@ -50,7 +61,7 @@ const Profile = ({
                   className="profile__input input_name"
                   minLength="4"
                   maxLength="40"
-                  placeholder={userInfo.name}
+                  defaultValue={userInfo.name}
                   onChange={handleChange}
                 />
               </label>
@@ -66,18 +77,19 @@ const Profile = ({
                   className="profile__input input_email"
                   minLength="4"
                   maxLength="40"
-                  placeholder={userInfo.email}
+                  defaultValue={userInfo.email}
                   onChange={handleChange}
                 />
               </label>
             </div>
           </fieldset>
+          <span className={isVisibleMessage}>Данные пользователя успешно сохранены!</span>
           <div className="profile__button ">
             <button
               className={submitButtonClass()}
               onClick={editingForm}
               type="submit"
-              disabled={!isValid}
+              disabled={!(isDesableButton())}
             >
               Сохранить
             </button>
