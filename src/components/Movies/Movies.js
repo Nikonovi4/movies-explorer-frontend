@@ -19,7 +19,6 @@ const Movies = ({
   handleSavedMovie,
   isLiked,
   unLikeMovie,
-  isDesable,
 }) => {
   const handleClick = () => {
     calculateCardCount();
