@@ -24,7 +24,13 @@ const Movies = ({
   const handleClick = () => {
     calculateCardCount();
   };
-console.log(isDesable)
+
+  const classNameButton = () => {
+    return roundedVisibleCardCount >= renderMovies.length
+      ? "movies__moreBtn_invisible"
+      : "movies__moreBtn";
+  };
+
   return (
     <section className="movies">
       <header className="movie__background">
@@ -56,26 +62,21 @@ console.log(isDesable)
           Ничего не найдено
         </span>
         <ul className="movies__cards">
-          {renderMovies?.slice(0, roundedVisibleCardCount).map((movie, movieId) => (
-            <MovieCard data={movie} key={movieId}>
-              <SaveButton
-                data={movie}
-                handleSavedMovie={handleSavedMovie}
-                isLiked={isLiked}
-                unLikeMovie={unLikeMovie}
-              />
-            </MovieCard>
-          ))}
+          {renderMovies
+            ?.slice(0, roundedVisibleCardCount)
+            .map((movie, movieId) => (
+              <MovieCard data={movie} key={movieId}>
+                <SaveButton
+                  data={movie}
+                  handleSavedMovie={handleSavedMovie}
+                  isLiked={isLiked}
+                  unLikeMovie={unLikeMovie}
+                />
+              </MovieCard>
+            ))}
         </ul>
         <section className="buttonplace">
-          <button
-            className={
-              (roundedVisibleCardCount === renderMovies.length)
-                ? "movies__moreBtn_invisible"
-                : "movies__moreBtn"
-            }
-            onClick={handleClick}
-          >
+          <button className={classNameButton()} onClick={handleClick}>
             Ещё
           </button>
         </section>
