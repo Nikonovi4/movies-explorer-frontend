@@ -1,4 +1,5 @@
 import InitialScreen from "../InitialScreen/InitialScreen";
+import { EMAIL_REG } from "../../utils/config";
 
 const Registration = ({
   handleChange,
@@ -50,7 +51,7 @@ const Registration = ({
             maxLength="40"
             placeholder="Ваш e-mail"
             onChange={handleChange}
-            pattern="/^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i"
+            pattern={EMAIL_REG}
           />
         </label>
         <label className="input__label">

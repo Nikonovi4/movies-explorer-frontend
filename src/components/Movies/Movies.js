@@ -19,6 +19,8 @@ const Movies = ({
   handleSavedMovie,
   isLiked,
   unLikeMovie,
+  setVisibleCardCount,
+  initialCardCount,
 }) => {
   const handleClick = () => {
     calculateCardCount();
@@ -43,6 +45,8 @@ const Movies = ({
           onSearchMovie={onSearchMovie}
           submitRequestValue={submitRequestValue}
           values={values}
+          setVisibleCardCount={setVisibleCardCount}
+          initialCardCount={initialCardCount}
         />
         <span
           className={

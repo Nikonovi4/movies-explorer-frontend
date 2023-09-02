@@ -1,18 +1,18 @@
 import Header from "../Header/Header";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { CurrentUserContext } from "../../context/CurrentUserContext";
 
 const Profile = ({
   openBurgerMenu,
   isOpenMenu,
-  userInfo,
   handleChange,
   isValid,
   handleEditUserInfo,
   handleLogout,
   values,
-  isVisibleMessage, 
+  isVisibleMessage,
   setVisibleMessage,
 }) => {
   const [isEditing, setEditing] = useState(false);
@@ -20,28 +20,30 @@ const Profile = ({
     isEditing ? setEditing(false) : setEditing(true);
   };
 
-
+  const currentUser = useContext(CurrentUserContext);
 
   const handleSubmitUserInfo = (e) => {
     e.preventDefault();
     handleEditUserInfo();
-    setVisibleMessage("error")
+    setVisibleMessage("error");
   };
 
   const submitButtonClass = () => {
     if (!isEditing) {
       return "submitButton submitButton_invisible";
-    } else if (isDesableButton()) {
+    } else if (disableButton()) {
       return "submitButton";
     } else {
       return "submitButton submitButton_disable";
     }
   };
 
-
-const isDesableButton = () => {
- return (isValid && (values.name !== userInfo.name) && (values.email !== userInfo.email))
-}
+  const disableButton = () => {
+    return (
+      isValid &&
+      (values.name !== currentUser.name || values.email !== currentUser.email)
+    );
+  };
 
   return (
     <section className="profile">
@@ -50,18 +52,19 @@ const isDesableButton = () => {
         <Header openBurgerMenu={openBurgerMenu} isOpenMenu={isOpenMenu} />
         <form className="profile__form" onSubmit={handleSubmitUserInfo}>
           <fieldset className="profile__fieldset" disabled={!isEditing}>
-            <legend className="profile__title">Привет, {userInfo.name}!</legend>
+            <legend className="profile__title">
+              Привет, {currentUser.name}!
+            </legend>
             <div className="profile__block">
               <label className="profile__lable">
                 Имя
                 <input
                   type="text"
-                  required
                   name="name"
                   className="profile__input input_name"
                   minLength="4"
                   maxLength="40"
-                  defaultValue={userInfo.name}
+                  defaultValue={currentUser.name}
                   onChange={handleChange}
                 />
               </label>
@@ -77,19 +80,21 @@ const isDesableButton = () => {
                   className="profile__input input_email"
                   minLength="4"
                   maxLength="40"
-                  defaultValue={userInfo.email}
+                  defaultValue={currentUser.email}
                   onChange={handleChange}
                 />
               </label>
             </div>
           </fieldset>
-          <span className={isVisibleMessage}>Данные пользователя успешно сохранены!</span>
+          <span className={isVisibleMessage}>
+            Данные пользователя успешно сохранены!
+          </span>
           <div className="profile__button ">
             <button
               className={submitButtonClass()}
               onClick={editingForm}
               type="submit"
-              disabled={!(isDesableButton())}
+              disabled={!disableButton()}
             >
               Сохранить
             </button>

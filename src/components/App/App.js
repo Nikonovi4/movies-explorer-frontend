@@ -43,6 +43,7 @@ function App() {
   const isDesktop = useMediaQuery(isDesktopSize);
   const isTablet = useMediaQuery(isTabletSize);
   const location = useLocation();
+  const historyAllMovies = historyResearch?.moviesList || null;
 
   //______________________Стейты________________________
 
@@ -95,12 +96,11 @@ function App() {
   //отборажение подсказки
   const [isVisibleMessage, setVisibleMessage] = useState("error_invisible");
 
-
   //______________________юзЭффекты________________________
 
   /// эффект для выгрузки фильмов с Я сервера
   useEffect(() => {
-    if (isLogin && !!submitRequestValue) {
+    if (historyAllMovies?.length === 0 && !!submitRequestValue) {
       setPreloaderVision(true);
       moviesApi
         .getAllCards()
@@ -112,7 +112,7 @@ function App() {
           setPreloaderVision(false);
         });
     }
-  }, [isLogin, submitRequestValue]);
+  }, [submitRequestValue, historyAllMovies]);
 
   /// эффект для отрисовки главное страницы
   useEffect(() => {
@@ -371,6 +371,7 @@ function App() {
     : SMALL_SCREEN_INITIAL_CARDS;
 
   const [visibleCardCount, setVisibleCardCount] = useState(initialCardCount);
+
   const roundedVisibleCardCount = visibleCardCount;
 
   const calculateCardCount = () => {
@@ -384,6 +385,7 @@ function App() {
 
     setVisibleCardCount(visibleCardCount + SMALL_SCREEN_ADDENDUM);
   };
+  useEffect(() => {});
 
   return (
     <section className="main">
@@ -418,16 +420,17 @@ function App() {
           />
           <Route
             path="/signin"
-            element={ !isLogin ?
-              (<Login
-                handleChange={handleChange}
-                errors={errors}
-                handleLogin={handleLogin}
-                isValid={isValid}
-                submitErrors={[submitErrors]}
-              />
+            element={
+              !isLogin ? (
+                <Login
+                  handleChange={handleChange}
+                  errors={errors}
+                  handleLogin={handleLogin}
+                  isValid={isValid}
+                  submitErrors={[submitErrors]}
+                />
               ) : (
-                <Navigate to='/' />
+                <Navigate to="/" />
               )
             }
           />
@@ -453,6 +456,8 @@ function App() {
                 isLiked={isLiked}
                 unLikeMovie={unLikeMovie}
                 errors={errors}
+                setVisibleCardCount={setVisibleCardCount}
+                initialCardCount={initialCardCount}
               />
             }
           />
@@ -481,7 +486,6 @@ function App() {
                 element={Profile}
                 openBurgerMenu={openBurgerMenu}
                 isOpenMenu={isOpenMenu}
-                userInfo={userInfo}
                 handleChange={handleChange}
                 isValid={isValid}
                 handleEditUserInfo={handleEditUserInfo}
@@ -489,6 +493,7 @@ function App() {
                 values={values}
                 isVisibleMessage={isVisibleMessage}
                 setVisibleMessage={setVisibleMessage}
+                errors={errors}
               />
             }
           />

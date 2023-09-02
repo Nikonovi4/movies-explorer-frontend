@@ -11,10 +11,7 @@ const InitialScreen = ({
   errors,
   isValid,
   onSubmit,
-  isDesable
 }) => {
- 
-
   return (
     <section className="initial">
       <header className="initial__header">
@@ -50,7 +47,6 @@ const InitialScreen = ({
               }
               type="submit"
               disabled={!isValid}
-              
             >
               {buttonText}
             </button>

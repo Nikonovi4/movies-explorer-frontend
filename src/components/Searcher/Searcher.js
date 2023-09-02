@@ -7,14 +7,15 @@ const Searcher = ({
   checkedCheckbox,
   onSearchMovie,
   submitRequestValue,
-  values
+  setVisibleCardCount,
+  initialCardCount,
 }) => {
   const handleSearchMovie = (e) => {
     e.preventDefault();
     onSearchMovie(e.target.elements["searcher"].value);
+    setVisibleCardCount(initialCardCount);
   };
 
- 
   return (
     <form className="searcher block" onSubmit={handleSearchMovie}>
       <label className="searcher__lable">
@@ -34,10 +35,12 @@ const Searcher = ({
         <Checkbox
           setCheckedCheckbox={setCheckedCheckbox}
           checkedCheckbox={checkedCheckbox}
+          setVisibleCardCount={setVisibleCardCount}
+          initialCardCount={initialCardCount}
         />
         <p className="checkbox__text">Короткометражки</p>
       </div>
-      
+
       <hr className="searcher__line" />
     </form>
   );
