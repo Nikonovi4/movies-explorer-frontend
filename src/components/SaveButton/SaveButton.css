@@ -1,0 +1,22 @@
+.saveButton {
+  background: url(../../images/save4d.svg) center no-repeat;
+  width: 20px;
+  height: 20px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.saveButton:hover {
+  opacity: 0.7;
+  transform: 0.3s;
+}
+
+.saveButton_clicked {
+  background: url(../../images/save4.svg) center no-repeat;
+}
+
+.saveButton_clicked:hover {
+  opacity: 0.7;
+  transform: 0.3s;
+}

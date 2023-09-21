@@ -1,0 +1,32 @@
+.inputs{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+}
+
+.input__label{
+  color: #8B8B8B;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  flex-direction: column;
+}
+
+.input{
+  padding-left: 15px;
+  margin-top: 10px;
+  height: 46px;
+  border-radius: 8px;
+  background-color: #2F2F2F;
+  border: none;
+  color: #FFF;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

@@ -1,0 +1,35 @@
+.blockHeader__title {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 28px;
+  letter-spacing: -0.72px;
+}
+
+.blockHeader__line {
+  border: none;
+  border-top: 1px solid #fff;
+  margin-bottom: 55px;
+  width: 100%;
+}
+
+.blockHeader__line_black {
+  border-top: 1px solid #000;
+}
+
+@media screen and (min-width: 760px) {
+  .blockHeader__title {
+    font-size: 22px;
+    letter-spacing: -0.88px;
+    margin-bottom: 25px;
+  }
+  .blockHeader__line {
+    margin-bottom: 5px;
+  }
+
+  .blockHeader__line_black {
+    border-top: 1px solid #fff;
+  }
+}

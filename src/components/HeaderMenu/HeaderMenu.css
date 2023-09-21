@@ -1,0 +1,70 @@
+.headerMenu {
+  display: none;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.headerMenu__list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-left: 0;
+  margin-left: 46px;
+}
+
+.headerMenu__link {
+  text-decoration: none;
+  color: #fff;
+  text-align: right;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.headerMenu__link_active {
+  font-weight: 500;
+}
+
+.headerMenu__link:hover {
+  opacity: 0.7;
+  transform: 0.3s;
+}
+
+.headerMenu__userInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.headerMenu__user {
+  color: #fff;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: Inter;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 12px;
+}
+
+.user__avatar {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+
+.header__container {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  width: 100%;
+}
+
+@media screen and (min-width: 769px) {
+  .headerMenu {
+    display: flex;
+  }
+
+}

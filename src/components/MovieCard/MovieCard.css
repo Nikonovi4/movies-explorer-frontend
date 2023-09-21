@@ -1,0 +1,87 @@
+.movieCard {
+  padding-top: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
+  padding-bottom: 14px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 6px;
+  background: #222;
+  box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.08);
+  min-width: 300px;
+  max-width: 335px;
+  min-height: 284px;
+  min-height: 237px;
+  width: 100%;
+}
+
+.movieCard__iqon {
+  width: 100%;
+ min-height: 190px;
+ max-height: 203px;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.movieCard__name {
+  position: relative;
+}
+
+.movieCard__info {
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.movieCard__status {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+
+.movieCard__name {
+  color: #ffff;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+}
+
+.movieCard__duration {
+  color: #8b8b8b;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 760px) {
+  .movieCard__name {
+    font-size: 13px;
+  }
+
+  .movieCard__status {
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .movieCard {
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .movieCard__iqon {
+    margin-bottom: 14px;
+  }
+}

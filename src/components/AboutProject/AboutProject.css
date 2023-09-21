@@ -1,0 +1,164 @@
+.aboutProject {
+  background-color: #202020;
+  height: 640px;
+  padding-top: 55px;
+}
+
+.aboutProject__title {
+  margin: 0 0 27px 0;
+}
+
+.aboutProject__subtitle {
+  margin-top: 60px;
+}
+
+.abotProject__text {
+  margin-top: 16px;
+}
+
+.abotProject__graph {
+  display: flex;
+  justify-content: center;
+  margin-top: 45px;
+}
+
+.abotProject__back {
+  width: 35%;
+  margin: 0;
+  flex-direction: column;
+}
+
+.back__text {
+  background-color: #3ddc84;
+  height: 35px;
+  color: #000;
+  text-align: center;
+  font-family: Inter;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.abotProject__front {
+  width: 65%;
+  margin: 0;
+  flex-direction: column;
+}
+
+.front__text {
+  background-color: #303030;
+  height: 35px;
+  color: #fff;
+  text-align: center;
+  font-family: Inter;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aboutProject__coment {
+  color: #a0a0a0;
+  text-align: center;
+  font-family: Suisse Intl;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 10px;
+}
+
+@media screen and (min-width: 760px) {
+  .aboutProject__textBlock {
+    display: flex;
+    gap: 30px;
+  }
+
+  .aboutProject__title {
+    margin-bottom: 25px;
+    margin-top: 0;
+  }
+
+  .aboutProject__backend {
+    width: 140px;
+    font-size: 14px;
+  }
+
+  .aboutProject__frontend {
+    font-size: 14px;
+    margin: 0;
+    width: 528px;
+  }
+
+  .aboutProject {
+    padding-top: 75px;
+  }
+
+  .aboutProject__charts {
+    margin-top: 85px;
+  }
+
+  .abotProject__graph {
+    margin-top: 73px;
+  }
+
+  .abotProject__back {
+    width: 21%;
+  }
+
+  .abotProject__front {
+    width: 79%;
+  }
+
+  .back__text {
+    font-size: 14px;
+  }
+
+  .front__text {
+    font-size: 14px;
+  }
+
+  .aboutProject__coment {
+    font-size: 14px;
+  }
+
+  .aboutProject {
+    height: 585px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .aboutProject {
+    padding-top: 92px;
+    height: 608px;
+  }
+
+  .aboutProject__textBlock {
+    gap: 50px;
+  }
+
+  .abotProject__text {
+    padding-top: 10px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .abotProject__graph {
+    margin-top: 84px;
+  }
+
+  .abotProject__back {
+    width: 20%;
+  }
+
+  .abotProject__front {
+    width: 80%;
+  }
+}

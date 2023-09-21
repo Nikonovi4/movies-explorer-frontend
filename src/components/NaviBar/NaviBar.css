@@ -1,0 +1,28 @@
+.naviBar{
+  background-color: #272727;
+  margin: 0;
+  display: flex;
+  gap: 24px;
+  list-style: none; 
+  text-decoration-line: underline;
+  height: 66px;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.naviBar__link {
+color: #fff;
+font-size: 13px;
+}
+
+.naviBar__link:hover{
+  opacity: .8;
+  transition: .3s;
+}
+
+@media screen and (min-width: 760px) {
+  .naviBar{
+    gap: 40px;
+  }
+}
