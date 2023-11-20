@@ -14,17 +14,23 @@
   padding-bottom: 30px;
   display: flex;
   flex-direction: column;
+  align-items: center
+
 }
 
 .profile__form {
   margin-top: 70px;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .profile__fieldset {
   border: none;
   margin: 0;
   padding: 0;
+  max-width: 410px;
 }
 
 .profile__title {
@@ -157,10 +163,10 @@
 }
 
 @media screen and (min-width: 760px) {
+  
   .profile__form {
     margin: 0;
     display: flex;
-    width: 100%;
     justify-content: center;
     align-items: center;
     margin-top: 25px;
@@ -168,8 +174,6 @@
 
   .profile__fieldset {
     width: 100%;
-    padding-left: 150px;
-    padding-right: 150px;
   }
 
   .profile__title {
@@ -186,13 +190,7 @@
 
 @media screen and (min-width: 1200px) {
   .profile__form {
-    align-items: flex-start;
     margin-top: 55px;
-  }
-
-  .profile__fieldset {
-    padding-left: 405px;
-    padding-right: 405px;
   }
 
   .profile__title {

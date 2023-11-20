@@ -1,37 +1,71 @@
 import Header from "../Header/Header";
-import BurgerIqon from "../BurgerIqon/BurgerIqon";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
-import HeaderMenu from "../HeaderMenu/HeaderMenu";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { CurrentUserContext } from "../../context/CurrentUserContext";
 
-const Profile = ({ openBurgerMenu, isOpenMenu, userInfo }) => {
-  const [isDisabled, setDisabled] = useState(true);
-  const undisabledForm = () => {
-    isDisabled ? setDisabled(false) : setDisabled(true);
+const Profile = ({
+  openBurgerMenu,
+  isOpenMenu,
+  handleChange,
+  isValid,
+  handleEditUserInfo,
+  handleLogout,
+  values,
+  isVisibleMessage,
+  setVisibleMessage,
+}) => {
+  const [isEditing, setEditing] = useState(false);
+  const editingForm = () => {
+    isEditing ? setEditing(false) : setEditing(true);
   };
+
+  const currentUser = useContext(CurrentUserContext);
+
+  const handleSubmitUserInfo = (e) => {
+    e.preventDefault();
+    handleEditUserInfo();
+    setVisibleMessage("error");
+  };
+
+  const submitButtonClass = () => {
+    if (!isEditing) {
+      return "submitButton submitButton_invisible";
+    } else if (disableButton()) {
+      return "submitButton";
+    } else {
+      return "submitButton submitButton_disable";
+    }
+  };
+
+  const disableButton = () => {
+    return (
+      isValid &&
+      (values.name !== currentUser.name || values.email !== currentUser.email)
+    );
+  };
+
   return (
     <section className="profile">
       <BurgerMenu isOpenMenu={isOpenMenu} openBurgerMenu={openBurgerMenu} />
       <div className="profile__content">
-      <Header>
-          <HeaderMenu />
-          <BurgerIqon openBurgerMenu={openBurgerMenu} isOpenMenu={isOpenMenu} />
-        </Header>
-        <form className="profile__form">
-          <fieldset className="profile__fieldset" disabled={isDisabled}>
-            <legend className="profile__title">Привет, {userInfo.name}!</legend>
+        <Header openBurgerMenu={openBurgerMenu} isOpenMenu={isOpenMenu} />
+        <form className="profile__form" onSubmit={handleSubmitUserInfo}>
+          <fieldset className="profile__fieldset" disabled={!isEditing}>
+            <legend className="profile__title">
+              Привет, {currentUser.name}!
+            </legend>
             <div className="profile__block">
               <label className="profile__lable">
                 Имя
                 <input
                   type="text"
-                  required
-                  name="input_name"
+                  name="name"
                   className="profile__input input_name"
                   minLength="4"
                   maxLength="40"
-                  value={userInfo.name}
+                  defaultValue={currentUser.name}
+                  onChange={handleChange}
                 />
               </label>
             </div>
@@ -42,41 +76,47 @@ const Profile = ({ openBurgerMenu, isOpenMenu, userInfo }) => {
                 <input
                   type="email"
                   required
-                  name="input_email"
+                  name="email"
                   className="profile__input input_email"
                   minLength="4"
                   maxLength="40"
-                  value={userInfo.email}
+                  defaultValue={currentUser.email}
+                  onChange={handleChange}
                 />
               </label>
             </div>
           </fieldset>
+          <span className={isVisibleMessage}>
+            Данные пользователя успешно сохранены!
+          </span>
+          <div className="profile__button ">
+            <button
+              className={submitButtonClass()}
+              onClick={editingForm}
+              type="submit"
+              disabled={!disableButton()}
+            >
+              Сохранить
+            </button>
+          </div>
         </form>
         <ul className="profile__buttons">
           <li className="profile__button">
             <button
-              className={isDisabled ? "button " : "button button_invisible"}
-              onClick={undisabledForm}
+              className={!isEditing ? "button " : "button button_invisible"}
+              onClick={editingForm}
             >
               Редактировать
             </button>
           </li>
           <li className="profile__button">
-              <NavLink className={isDisabled ? "button button_exit" : "button_invisible"} to="/signin">
-              Выйти из аккаунта
-              </NavLink>
-          </li>
-          <li className="profile__button ">
-            <button
-              className={
-                isDisabled
-                  ? "submitButton submitButton_invisible"
-                  : "submitButton"
-              }
-              onClick={undisabledForm}
+            <NavLink
+              className={!isEditing ? "button button_exit" : "button_invisible"}
+              to="/signin"
+              onClick={handleLogout}
             >
-              Сохранить
-            </button>
+              Выйти из аккаунта
+            </NavLink>
           </li>
         </ul>
       </div>

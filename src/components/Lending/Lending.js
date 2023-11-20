@@ -5,13 +5,16 @@ import Header from "../Header/Header";
 import Techs from "../Techs/Techs";
 import Portfolio from "../Portfolio/Portfolio";
 import Footer from "../Footer/Footer";
-import LendingMenu from "../LendingMenu/LendingMenu";
 
-const Lending = () => {
+const Lending = ({ isLogin, openBurgerMenu, isOpenMenu }) => {
   return (
     <>
       <header className="lending__background">
-        <Header children={<LendingMenu />} />
+        <Header
+          isLogin={isLogin}
+          openBurgerMenu={openBurgerMenu}
+          isOpenMenu={isOpenMenu}
+        />
       </header>
       <main>
         <Promo promoText="Учебный проект студента факультета Веб&#8209;разработки." />

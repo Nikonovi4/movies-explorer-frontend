@@ -29,5 +29,6 @@
 
 @import url('./components/InitialScreen/InitialScreen.css');
 @import url('./components/inputs/inputs.css');
+@import url('./components/SavedMovie/SavedMovie.css');
 
 @import url('./components/NotFound/NotFound.css');
